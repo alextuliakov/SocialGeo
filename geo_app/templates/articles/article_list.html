@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title_page %}
+    <title>
+        Список заметок
+    </title>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <ul class="list-group" style="padding-top:30px">
+        {% for article in articles %}
+            <li class="list-group-item">
+                <a href="{% url 'geo_app:articleDetail' pk=article.id %}">{{ article.header }}</a><br>
+                <a href="{% url 'geo_app:otherProfilePage' username=article.owner %}" class="text-muted text-decoration-none">
+                    <img src="{{ article.owner.profile.avatar.url }}" class="rounded-circle img-fluid" height="20" width="20">  {{ article.owner }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

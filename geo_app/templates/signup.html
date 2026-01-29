@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity=
+        "sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Регистрация</title>
+</head>
+<body>
+    <div class="row">
+        <a class="btn btn-light btn-block" href="/">На главную</a>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+            <h4 class="card-title">Регистрация</h4>
+            <form method="post">
+            {% csrf_token %}
+            {% load crispy_forms_tags %}
+                {% for field in form %}
+                    <p> {{ field.label_tag }}<br>
+                    {{ field | as_crispy_field}}
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                    </p>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

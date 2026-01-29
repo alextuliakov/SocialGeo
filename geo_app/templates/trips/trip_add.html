@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block js_pre %}
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    {% crispy form %}
+</div>
+{% endblock %}

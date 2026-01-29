@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+    {% block title_page %}
+        <title>Yandex Map Test</title>
+    {% endblock %}
+    {% block js_pre %}
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=73ca8a7c-00a0-4c08-882a-4c5f14e4958c&lang=ru_RU" type="text/javascript">
+        </script>
+        <script type="text/javascript">
+            ymaps.ready(init);
+            function init(){
+                var map = new ymaps.Map("map", {
+                    center: [55.76, 37.64],
+                    controls: [
+                        'geolocationControl',
+                        'typeSelector'
+                    ],
+                    zoom: 4
+                });
+                placemarks = []
+                {% for article in articles %}
+                var placemark
+                var coords = [{{article.placemark.geometry.x_coord}}, {{article.placemark.geometry.y_coord}}];
+                var placemark = createPlacemark(coords);
+                btn = `<a href="/articles/{{article.id}}" class="btn btn-outline-dark">{{article.header}}</a><br><a href="{% url 'geo_app:otherProfilePage' username=article.owner %}" class="text-muted text-decoration-none"><img src="{{ article.owner.profile.avatar.url }}" class="rounded-circle img-fluid" height="20" width="20">  {{ article.owner }}</a><span class="text-muted text-decoration-none" style="margin-left:10%;">{{article.pub_date.date}}</span><br><button style="width:2em;height:2em; background-color:transparent; border: solid 1px; border-radius:4px;" disabled><i class="fa fa-heart"></i></button>  <span style="font-size:1.5em;">{{article.like_set.count}}</span><button style="width:2em;height:2em; background-color:transparent; border: solid 1px; border-radius:4px; margin-left:10%" disabled><i class="fa fa-comments"></i></button>  <span style="font-size:1.5em;">{{article.comment_set.count}}</span>`
+                placemark.properties
+                .set({
+                    balloonContent: btn
+                });
+                placemarks.push(placemark);
+                {% endfor %}
+                MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+                    '<div style="color: #FFFFFF; font-weight: bold;">{{ properties.geoObjects.length }}</div>'
+                ),
+                clusterer = new ymaps.Clusterer(
+                    {
+                        clusterDisableClickZoom: true,
+                        clusterOpenBalloonOnClick: false,
+                        clusterIcons: [
+                            {
+                                href: '/static/images/geo_point.png',
+                                size: [24, 32],
+                                textColor: '#000000',
+                                offset: [-20, -20]
+                            },
+                        ],
+                        clusterIconContentLayout: MyIconContentLayout
+                    }
+                );
+                clusterer.add(placemarks);
+                map.geoObjects.add(clusterer);
+            }
+            function createPlacemark(coords) {
+                return new ymaps.Placemark(coords, {
+                iconCaption: 'поиск...'
+            },
+            {
+                iconLayout: 'default#image',
+                iconImageHref: '/static/images/geo_point.png',
+                iconImageSize: [24, 32],
+                iconImageOffset: [-12, 0],
+                hideIconOnBalloonOpen: false
+            });
+    }
+        </script>
+    {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <a href="/articles/add" class="btn btn-outline-dark" style="margin-bottom:10px;"><i class="fa fa-plus"></i> Добавить заметку</a>
+        <div id="map" style="width: 100%; height: 48em"></div>
+    </div>
+{% endblock %}

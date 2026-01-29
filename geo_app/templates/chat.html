@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_page %}
+<title>Test chat page</title>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid input-group mb-3">
+    <div class="w-100">
+        <!-- Будущая карточка собеседника
+        <div class="container-fluid w-25 h-10" id="friendCard">
+            <div class="card">
+                <img src="{% static '' %}" alt="Аватар" class="card-image-top">
+                <div class="card-body">
+                    <h5 class="card-title">Собеседник</h5>
+                    <p class="card-text">Описание/статус собеседника</p>
+                </div>
+            </div>
+        </div> -->
+        <textarea id="chat-log" class="w-100 p-3" rows="20"></textarea>
+        <form class="bg-light">
+            <div class="input-group">
+              <input type="text" id="chat-message-input" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
+              <div class="input-group-append">
+                <button id="chat-message-submit" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+              </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ room_name|json_script:"room-name" }}
+{% endblock %}
+
+{% block js_post %}
+<script src="{% static 'js/chatroom.js' %}"></script>
+{% endblock %}

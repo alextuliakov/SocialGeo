@@ -1,0 +1,50 @@
+{% load static %}
+{% block extra_css %}
+{% endblock %}
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="/"><img src="https://gitlab.informatics.ru/uploads/-/system/project/avatar/2564/map-point-logo-icon-design-vector-22904202.jpg?width=40" width="30" height="30" alt="">Social GEO</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% for item in menu_items %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{item.url}}">{{ item.header }}<span class="sr-only">(current)</span></a>
+                </li>
+                {% endfor %}
+                {% if request.user and request.user.is_superuser %}
+                {% for item in superuser_menu_items %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{item.url}}">{{ item.header }}<span class="sr-only">(current)</span></a>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                {% if request.user.is_authenticated %}
+                    <div class="dropdown" style="margin-right:10px;">
+                        <button class="btn btn-light my-2 my-sm-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Мой аккаунт: {{ request.user }}
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% if request.user.is_superuser %}
+                        <a class="dropdown-item" href="/admin_profile_create/" style="color:red;">Создать профиль (админ)</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="/profile/{{request.user}}">Профиль</a>
+                        <a class="dropdown-item" href="/profile/articles/map/{{request.user}}">Стена</a>
+                        <a class="dropdown-item" href="/profile/trips/{{request.user}}">Поездки</a>
+                        <a class="dropdown-item" href="/profile/stats/{{request.user}}">Статистика</a>
+                      </div>
+                    </div>
+                    <a class="btn btn-outline-secondary my-2 my-sm-0" href="/accounts/logout">Выйти</a>
+                {% else %}
+                    <a class="btn btn-outline-secondary my-2 my-sm-0" style="margin-right: 10px;" href="/accounts/login">Войти</a>
+                    <a class="btn btn-outline-secondary my-2 my-sm-0" href="/signup">Регистрация</a>
+                {% endif %}
+            </form>
+        </div>
+    </nav>
+</div>

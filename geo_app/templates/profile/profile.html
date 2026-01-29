@@ -1,0 +1,65 @@
+{% extends 'base_profile.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title_page %}
+<title>Профиль</title>
+{% endblock %}
+
+{% block profile_content %}
+<script src='{% static "js/subscribe.js" %}'></script>
+<div class="card-body content_body" style="">
+    <!-- Alerts -->
+        <div class="alert alert-success alert-dismissible fade" style="display: none;" role="alert" id="subAlert">
+          <strong>Успешно!</strong> Теперь вы подписчик {{user.username}}!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade" style="display: none;" role="alert" id="unsubAlert">
+          <strong>Успешно!</strong> Вы больше не подписаны на {{user.username}}!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    <!-- End Alerts-->
+    <ul class="list-group list-group-horizontal">
+        <li class="list-group-item content_body">
+            <div class="media">
+                {% if profile.avatar.url != null %}
+                <img class="avatar" src="{{profile.avatar.url}}" alt="" />
+                {% else %}
+                <img class="avatar" src="{% static 'avatar.jpg' %}" alt="" />
+                {% endif %}
+            </div>
+            {% if user.username == request.user.username %}
+            <a href="/profile/edit/general/"><button type="button" style="margin-top: 5px; width: 100%;" class="btn btn-outline-dark">Редактировать</button></a>
+            {% else %}
+                {% if not subscribe %}
+                <span data-act="follow">
+                    <button type="button" onclick="subscribe();" style="margin-top: 5px; width: 100%;" class="btn btn-success" id="btn_follow">Подписаться</button>
+                </span>
+                {% else %}
+                <span data-act="unsub">
+                    <button type="button" style="margin-top: 5px; width:100%;" class="btn btn-danger" onclick="unsubscribe();" id="btn_follow">Отписаться</button>
+                </span>
+                {% endif %}
+            {% endif %}
+        </li>
+        <li class="list-group-item content_body" style="width:100%;">
+            <ul class="list-group list-group-flush" style="padding: 2px;">
+                <li class="list-group-item content_body">Никнейм: {{user.username}}</li>
+                <li class="list-group-item content_body">Почта: {{user.email}}</li>
+                <li class="list-group-item content_body">Имя: {{user.first_name}}</li>
+                <li class="list-group-item content_body">Фамилия: {{user.last_name}}</li>
+                <li class="list-group-item content_body">Пол: {{ profile.gender }}</li>
+                <li class="list-group-item content_body">Последний вход: {{user.last_login}}</li>
+                <li class="list-group-item content_body"><div style="display:block;width:100%;">Подписки:
+                <div class="badge badge-secondary badge_tag">TestTag1</div>
+                <div class="badge badge-secondary badge_tag">Tag2</div></div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% autoescape off %}
+Добро пожаловать, {{ user.username }},
+Перейдите по ссылке, чтобы подтвердить регистрацию
+http://{{ domain }}/activate/{{ uid }}/{{ token }}/
+{% endautoescape %}

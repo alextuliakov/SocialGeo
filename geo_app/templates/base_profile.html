@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style_sidebar.css' %}">
+    <link href="{% static 'css/landing-page.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-12">
+<div class="wrapper d-flex align-items-stretch" style="padding-top:30px;">
+			<nav id="sidebar" class="active fixed-top" style="background-color:#f7f7f5; z-index:0;">
+				<div class="custom-menu" style="padding-top:17px;">
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+                        <i class="fa fa-bars"></i>
+                        <span class="sr-only">Toggle Menu</span>
+                    </button>
+                </div>
+				<div class="p-4">
+	                <ul class="list-unstyled components mb-5">
+                      <li class="{{profile_items.profile}}">
+                        <a href="/profile/{{user}}" style="color:black; font-size:1.2em;"><span class="fa fa-user mr-3"></span>Профиль</a>
+                      </li>
+                      <hr>
+                      <li class="" style="color: black;">
+                          {% if request.user == user %}
+                              <span style="font-size:1.3em">Мои заметки</span>
+                              <a href="/profile/articles/map/{{user}}" style="margin-left:40px; color:black;"><span class="fa fa-map-pin mr-3"></span>Карта</a>
+                              <a href="/profile/articles/list/{{user}}" style="margin-left:40px; color:black;"><span class="fa fa-list mr-3"></span>Список</a>
+                              <hr>
+                              <a href="/profile/trips/{{user}}" style="color:black; font-size:1.3em"><span class="fa fa-plane mr-3"></span>Мои путешествия</a>
+                                <hr>
+                          {% else %}
+                            <a href="/profile/articles/map/{{user}}" style="color:black; font-size:1.3em;"><span class="fa fa-map-pin mr-3"></span>Заметки</a>
+                            <a href="/profile/trips/{{user}}" style="color:black; font-size:1.3em;"><span class="fa fa-plane mr-3"></span>Путешествия</a>
+                            <hr>
+                          {% endif %}
+                      </li>
+                      <li class="">
+                            <a href="/profile/stats/{{user}}" style="color:black; font-size:1.3em;">
+                                    <span class="fa fa-calculator mr-3"></span>
+                                    {% if request.user == user %}Моя статистика{% else %}Статистика{% endif %}
+                            </a>
+                      </li>
+                    </ul>
+	            </div>
+    	    </nav>
+    <div id="content" class="p-4 p-md-5 pt-5">
+        {% block profile_content %} {% endblock %}
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block js_post %}
+    <script>
+     (function($) {
+
+	"use strict";
+
+	var fullHeight = function() {
+
+		$('.js-fullheight').css('height', $(window).height());
+		$(window).resize(function(){
+			$('.js-fullheight').css('height', $(window).height());
+		});
+
+	};
+	fullHeight();
+
+	$('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+    });
+    })(jQuery);
+    </script>
+{% endblock %}

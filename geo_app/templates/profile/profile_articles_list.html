@@ -1,0 +1,44 @@
+{% extends 'base_profile.html' %}
+{% block title_page %}
+    <title>
+        Список ваших заметок
+    </title>
+{% endblock %}
+{% block js_pre %}
+<script type="text/javascript">
+    function delete_article(id){
+        console.log('delete reached')
+        $('#exampleModalCenter').modal('hide')
+        data = {
+            'delete': String(id)
+        }
+        $.ajax({
+                type: 'GET',
+                url: "/articles/{{article.id}}",
+                data: data,
+                success: function(response){ console.log("SUCCESS") },
+                error: function(response) {console.log("ERROR")}
+        })
+    }
+</script>
+{% endblock %}
+{% block profile_content %}
+<div class="container-fluid">
+    <ul class="list-group" style="padding-top:30px">
+        {% for article in articles %}
+            <li class="list-group-item">
+                <a href="{% url 'geo_app:articleDetail' pk=article.id %}">{{ article.header }}</a><br>
+                <a href="{% url 'geo_app:otherProfilePage' username=article.owner %}" class="text-muted text-decoration-none">
+                    <img src="{{ article.owner.profile.avatar.url }}" class="rounded-circle img-fluid" height="20" width="20">  {{ article.owner }}</a>
+                <div style="height: 3em;">
+                {% if request.user == article.owner %}
+                    <a class="btn btn-warning btn-sm" href="{% url 'geo_app:articleEdit' pk=article.id %}" style="width:5%;opacity:0.6;"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-danger btn-sm" href="{% url 'geo_app:articleDelete' pk=article.id %}" style="width:5%;opacity:0.6;"><i class="fa fa-trash"></i></a>
+                {% endif %}
+                </div>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

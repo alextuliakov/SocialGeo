@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <h4>
+                        Вы уверены, что хотите удалить заметку <strong>{{ object }}</strong> ?
+                    </h4>
+                    <input  class="btn btn-danger" type="submit" value="Да, удалить" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input  class="btn btn-outline-secondary" type="submit" value="Отмена" onclick="goBack()" />
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+{% endblock content %}

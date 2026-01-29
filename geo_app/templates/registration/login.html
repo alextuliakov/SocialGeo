@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Логин</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+	{% load crispy_forms_tags %}
+	<div class="row">
+ 		<a class="btn btn-light btn-block" href="/">На главную</a>
+	</div>
+	<div class="container">
+ 		<div class="card">
+ 			<div class="card-body">
+ 				<h4 class="card-title">Войдите в аккаунт</h4>
+ 				<form method="post">
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ next }}">
+					{{ form|crispy }}
+					<br>
+					<button type="submit" class="btn btn-primary btn-block">Войти</button>
+ 				</form>
+ 			</div>
+ 		</div>
+	</div>
+</body>
+</html>
